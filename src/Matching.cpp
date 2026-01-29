@@ -1,32 +1,30 @@
 #include "Matching.h"
 
 vector<int> Matching::matchingEngine() {
-    for (int h = 1; h <= n; h++) {
-        cout << h << endl;
-        if (numMatches == n)
-            break;
-        if (hMatches[h] != 0 || hTries[h] > n)
+    while (!unmatched.empty()) {
+        int h = *unmatched.begin();
+        if (hTries[h] >= n) {
+            unmatched.erase(h);
             continue;
-        int s = hPref[h][hTries[h]++];
+        }
+        int s = hPref[h][++hTries[h]]; // hTries will read [1, n]
         if (sMatches[s] == 0) {
             hMatches[h] = s;
+            unmatched.erase(h);
+
             sMatches[s] = h;
-            numMatches++;
         }
-        int hPrime = sMatches[s];
-        for (int i = 0; i < n ; i++) {
-            if (sPref[s][i] == hPrime) {
-                break;
-            }
-            else if (sPref[s][i] == h) {
+        else {
+            int hPrime = sMatches[s];
+            if (sPref[s][h] < sPref[s][hPrime]) { // lower number == higher preference
                 hMatches[h] = s;
+                unmatched.erase(h);
+
                 sMatches[s] = h;
+
                 hMatches[hPrime] = 0;
-                break;
+                unmatched.insert(hPrime);
             }
-        }
-        if (h == n) {
-            h = 0;
         }
     }
 
@@ -37,21 +35,34 @@ int main() {
     int n;
     cin >> n;
 
-    auto h = vector(n+1, vector<int>(n));
+    // each row is a hospital, each column is a student (in descending preference order)
+    // first row are zeros (for sake of indexing)
+    auto h = vector(n+1, vector<int>(n+1));
     for (int i = 1; i <= n; i++) {
-        for (int j = 0; j < n; j++) {
+        for (int j = 1; j <= n; j++) {
             cin >> h[i][j];
         }
     }
 
-    auto s = vector(n+1, vector<int>(n));
+    // each row is a student. for columns, indexes represent hospitals and values represent their rank
+    // first row and first column are zeros (for sake of ease of indexing)
+    auto s = vector(n+1, vector<int>(n+1));
     for (int i = 1; i <= n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> s[i][j];
+        for (int j = 1; j <= n; j++) {
+            int curH;
+            cin >> curH;
+            s[i][curH] = j;
         }
     }
 
-    Matching matchObj(n, h, s);
+
+
+    unordered_set<int> u;
+    for (int i = 1; i <= n; i++) {
+        u.insert(i);
+    }
+
+    Matching matchObj(n, h, s, u);
     vector<int> res = matchObj.matchingEngine();
 
     for (int i = 1; i <= n; i++) {
