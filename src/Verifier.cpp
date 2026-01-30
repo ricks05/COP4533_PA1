@@ -7,7 +7,7 @@ bool Verifying::verifyingEngine() {
             if(hPref.at(i).at(j) == (matchList.at(i))) {
                 // run through every possible preference that the hospital prefers over its current match
                 for(int p = j-1; p >= 1; p--) {
-                    int curHospital;  // holds the matched hospital match of the greater student pref
+                    int curHospital = 0;  // holds the matched hospital match of the greater student pref
                     // run through list of matches to find currently matched hospital to preferred student
                     for(int l = 1; l < matchList.size(); l++) {
                         if(matchList.at(l) == hPref.at(i).at(p)) {
@@ -15,16 +15,9 @@ bool Verifying::verifyingEngine() {
                             break;
                         }
                     }
-                    // go through student's preference list
-                    for(int k = n; k >= 1; k--) {
-                        // if original hospital shows up first, it so not preferred over current match, therefore stable
-                        if(sPref.at(p).at(k) == i)
-                            break;
-                        // if current matched hospital shows up first, both student and hospital prefer each other,
-                        // therefore unstable
-                        else if (sPref.at(p).at(k) == curHospital)
-                            return false;
-                    }
+                    // if current matched hospital is preferred over potential swapping match, match is stable
+                    if(sPref.at(hPref.at(i).at(p)).at(curHospital) > sPref.at(hPref.at(i).at(p)).at(i))
+                        return false;
                 }
                 break;
             }

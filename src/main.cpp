@@ -1,4 +1,5 @@
 #include "Matching.h"
+#include "Verifier.h"
 
 int main() {
     int n;
@@ -37,6 +38,19 @@ int main() {
     for (int i = 1; i <= n; i++) {
         cout << i << " " << res[i] << endl;
     }
+
+    Verifying verifyObj(n, h, s, res);
+    bool stability = verifyObj.verifyingEngine();
+    bool validity = verifyObj.duplicateEngine();
+
+    if(stability && validity)
+        cout << "VALID STABLE";
+    else if(!stability && !validity)
+        cout << "INVALID UNSTABLE";
+    else if(!stability)
+        cout << "UNSTABLE";
+    else
+        cout << "INVALID";
 
     return 0;
 }
