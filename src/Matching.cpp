@@ -30,3 +30,11 @@ vector<int> Matching::matchingEngine() {
 
     return hMatches;
 }
+
+vector<vector<int>> Matching::getHPref() {
+    return hPref;
+}
+
+vector<vector<int>> Matching::getSPref() {
+    return sPref;
+}
