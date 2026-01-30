@@ -2,8 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 df = pd.read_csv("..\\data\\matching_data.csv")
-print(list(df.columns))
-
 
 plt.figure(figsize=(8, 5))
 plt.plot(df["n"], df["T(n)"])
