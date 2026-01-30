@@ -1,6 +1,6 @@
 #include "Verifier.h"
 
-bool Verifying::verifyingEngine() {
+bool Verifier::verifierEngine() {
     for(int i = 1; i < matchList.size(); i ++) {  // run through every match in the list of matches
         for(int j = n; j >= 1; j--) {  // starting from the end of the cur hospital's preference list
             // find the position of the current hospital's matched student
@@ -26,7 +26,7 @@ bool Verifying::verifyingEngine() {
     return true;  // no unstable matches, therefore stable
 }
 
-bool Verifying::duplicateEngine() {
+bool Verifier::duplicateEngine() {
     unordered_set<int> students;  // set to hold all students
     for(int match : matchList) {  // goes through every student
         if(students.find(match) == students.end())  // tries to find if student has already been assigned

@@ -1,16 +1,19 @@
 #include "Matching.h"
 #include "Verifier.h"
+#include <fstream>
 
 int main() {
+    ifstream fin("");
+    ofstream fout("");
     int n;
-    cin >> n;
+    fin >> n;
 
     // each row is a hospital, each column is a student (in descending preference order)
     // first row are zeros (for sake of indexing)
     auto h = vector(n+1, vector<int>(n+1));
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
-            cin >> h[i][j];
+            fin >> h[i][j];
         }
     }
 
@@ -20,7 +23,7 @@ int main() {
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
             int curH;
-            cin >> curH;
+            fin >> curH;
             s[i][curH] = j;
         }
     }
@@ -36,21 +39,21 @@ int main() {
     vector<int> res = matchObj.matchingEngine();
 
     for (int i = 1; i <= n; i++) {
-        cout << i << " " << res[i] << endl;
+        fout << i << " " << res[i] << endl;
     }
 
-    Verifying verifyObj(n, h, s, res);
-    bool stability = verifyObj.verifyingEngine();
-    bool validity = verifyObj.duplicateEngine();
+    Verifier verifierObj(n, h, s, res);
+    bool stability = verifierObj.verifierEngine();
+    bool validity = verifierObj.duplicateEngine();
 
     if(stability && validity)
-        cout << "VALID STABLE";
+        fout << "VALID STABLE";
     else if(!stability && !validity)
-        cout << "INVALID UNSTABLE";
+        fout << "INVALID UNSTABLE";
     else if(!stability)
-        cout << "UNSTABLE";
+        fout << "UNSTABLE";
     else
-        cout << "INVALID";
+        fout << "INVALID";
 
     return 0;
 }
