@@ -1,10 +1,22 @@
 #include "Matching.h"
 #include "Verifier.h"
 #include <fstream>
+#include <iostream>
 
 int main() {
-    ifstream fin("");
-    ofstream fout("");
+    ifstream fin("../io_files/ExampleInput");
+    ofstream fout("../io_files/ExampleOutput");
+
+    if (!fin) {
+        cerr << "Failed to open ExampleInput file\n";
+        return 1;
+    }
+
+    if (!fout) {
+        cerr << "Failed to open ExampleOutput file\n";
+        return 1;
+    }
+
     int n;
     fin >> n;
 
@@ -42,10 +54,13 @@ int main() {
         fout << i << " " << res[i] << endl;
     }
 
+    // make Verifier object and pass through n, hospital preference, student preferences, and matching result
     Verifier verifierObj(n, h, s, res);
+    // run verifier functions
     bool stability = verifierObj.verifierEngine();
     bool validity = verifierObj.duplicateEngine();
 
+    // write output based on validity and stability
     if(stability && validity)
         fout << "VALID STABLE";
     else if(!stability && !validity)
