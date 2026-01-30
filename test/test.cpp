@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <fstream>
 
 Matching buildObj(int n) {
     random_device rd;
@@ -34,7 +35,7 @@ Matching buildObj(int n) {
     return obj;
 }
 
-void runTest(int n, Matching& obj) {
+int runTest(int n, Matching& obj) {
     auto start = chrono::high_resolution_clock::now();
 
     obj.matchingEngine();
@@ -43,15 +44,31 @@ void runTest(int n, Matching& obj) {
 
     auto elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start);
     cout << "T(n=" << n << "): " << elapsed.count() << " ns" << endl;
+    return (int) elapsed.count();
 }
 
 int main() {
+    vector<int> N, T;
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 12; i++) {
         int n = (int) pow(2, i);
+        N.push_back(n);
+
         auto obj = buildObj(n);
-        runTest(n, obj);
+
+        auto t = runTest(n, obj);
+        T.push_back(t);
     }
+
+    ofstream myfile;
+    myfile.open("..\\data\\matching_data.csv");
+    myfile << "n,T(n)\n";
+    for (int i = 0; i < N.size(); i++) {
+        myfile << N[i] << "," << T[i] << "\n";
+    }
+    myfile.close();
+
+    // manually run graph.py at this point
 
     return 0;
 }
