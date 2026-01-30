@@ -50,7 +50,7 @@ int runTest(int n, Matching& obj) {
 int main() {
     vector<int> N, T;
 
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 14; i++) {
         int n = (int) pow(2, i);
         N.push_back(n);
 
