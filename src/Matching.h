@@ -13,4 +13,6 @@ public:
         : n(n), hPref(h), sPref(s), hMatches(n+1, 0), sMatches(n+1, 0),
           hTries(n+1, 0), unmatched(u) {}
     vector<int> matchingEngine();
+    vector<vector<int>> getHPref();
+    vector<vector<int>> getSPref();
 };

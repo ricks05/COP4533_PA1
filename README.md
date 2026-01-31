@@ -43,3 +43,7 @@
 ![Alt text](data/matching_engine_performance.png)  
 From the graph, it is clear that our matching engine presents non-linear growth.  
 It presents polynomial growth that is likely quadratic, making it so that T(n) belongs to O(n^2).
+
+![Alt text](data/verifying_engine_performance.png)  
+From the graph, it is clear that our verifying engine presents non-linear growth.  
+It presents polynomial growth that is likely quadratic, making it so that T(n) belongs to O(n^2).

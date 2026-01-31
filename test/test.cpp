@@ -1,4 +1,6 @@
 #include "..\src\Matching.h"
+#include "..\src\Verifier.h"
+#include <iostream>
 #include <cmath>
 #include <algorithm>
 #include <random>
@@ -35,20 +37,31 @@ Matching buildObj(int n) {
     return obj;
 }
 
-int runTest(int n, Matching& obj) {
-    auto start = chrono::high_resolution_clock::now();
+pair<long long, long long> runTests(int n, Matching& obj) {
+    auto startM = chrono::high_resolution_clock::now();
+    auto match = obj.matchingEngine();
+    auto endM = chrono::high_resolution_clock::now();
 
-    obj.matchingEngine();
+    auto elapsedM = chrono::duration_cast<chrono::nanoseconds>(endM - startM);
+    cout << "Matcher T(n=" << n << ") = " << elapsedM.count() << " ns" << endl;
 
-    auto end = chrono::high_resolution_clock::now();
+    auto hPref = obj.getHPref();
+    auto sPref = obj.getSPref();
+    Verifier v(n, hPref, sPref, match);
 
-    auto elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start);
-    cout << "T(n=" << n << "): " << elapsed.count() << " ns" << endl;
-    return (int) elapsed.count();
+    auto startV = chrono::high_resolution_clock::now();
+    v.verifierEngine();
+    v.duplicateEngine();
+    auto endV = chrono::high_resolution_clock::now();
+    auto elapsedV = chrono::duration_cast<chrono::microseconds>(endV - startV);
+    cout << "Verifier T(n=" << n << ") = " << elapsedV.count() << " microns\n\n";
+
+    return make_pair(elapsedM.count(), elapsedV.count());
 }
 
 int main() {
-    vector<int> N, T;
+    vector<int> N;
+    vector<long long> Tm, Tv;
 
     for (int i = 0; i < 14; i++) {
         int n = (int) pow(2, i);
@@ -56,15 +69,23 @@ int main() {
 
         auto obj = buildObj(n);
 
-        auto t = runTest(n, obj);
-        T.push_back(t);
+        auto t = runTests(n, obj);
+        Tm.push_back(t.first);
+        Tv.push_back(t.second);
     }
 
     ofstream myfile;
     myfile.open("..\\data\\matching_data.csv");
     myfile << "n,T(n)\n";
     for (int i = 0; i < N.size(); i++) {
-        myfile << N[i] << "," << T[i] << "\n";
+        myfile << N[i] << "," << Tm[i] << "\n";
+    }
+    myfile.close();
+
+    myfile.open("..\\data\\verifying_data.csv");
+    myfile << "n,T(n)\n";
+    for (int i = 0; i < N.size(); i++) {
+        myfile << N[i] << "," << Tv[i] << "\n";
     }
     myfile.close();
 

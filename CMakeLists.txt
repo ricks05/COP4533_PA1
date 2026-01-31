@@ -7,4 +7,5 @@ add_executable(app src/Matching.cpp
         src/main.cpp
         src/Verifier.cpp)
 add_executable(test test/test.cpp
-        src/Matching.cpp)
+        src/Matching.cpp
+        src/Verifier.cpp)
