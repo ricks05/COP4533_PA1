@@ -1,6 +1,6 @@
 #include "Verifier.h"
 
-bool Verifier::verifierEngine() {
+vector<int> Verifier::verifierEngine() {
     for(int i = 1; i < matchList.size(); i ++) {  // run through every match in the list of matches
         for(int j = n; j >= 1; j--) {  // starting from the end of the cur hospital's preference list
             // find the position of the current hospital's matched student
@@ -17,13 +17,13 @@ bool Verifier::verifierEngine() {
                     }
                     // if current matched hospital is preferred over potential swapping match, match is stable
                     if(sPref.at(hPref.at(i).at(p)).at(curHospital) > sPref.at(hPref.at(i).at(p)).at(i))
-                        return false;
+                        return {0, i, p};
                 }
                 break;
             }
         }
     }
-    return true;  // no unstable matches, therefore stable
+    return {1, 0, 0};;  // no unstable matches, therefore stable
 }
 
 bool Verifier::duplicateEngine() {
