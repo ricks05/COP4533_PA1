@@ -37,7 +37,7 @@ Matching buildObj(int n) {
     return obj;
 }
 
-pair<int, int> runTests(int n, Matching& obj) {
+pair<long long, long long> runTests(int n, Matching& obj) {
     auto startM = chrono::high_resolution_clock::now();
     auto match = obj.matchingEngine();
     auto endM = chrono::high_resolution_clock::now();
@@ -56,11 +56,12 @@ pair<int, int> runTests(int n, Matching& obj) {
     auto elapsedV = chrono::duration_cast<chrono::microseconds>(endV - startV);
     cout << "Verifier T(n=" << n << ") = " << elapsedV.count() << " microns\n\n";
 
-    return make_pair((int) elapsedM.count(), (int) elapsedV.count());
+    return make_pair(elapsedM.count(), elapsedV.count());
 }
 
 int main() {
-    vector<int> N, Tm, Tv;
+    vector<int> N;
+    vector<long long> Tm, Tv;
 
     for (int i = 0; i < 14; i++) {
         int n = (int) pow(2, i);
