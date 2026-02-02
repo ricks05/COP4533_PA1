@@ -27,7 +27,7 @@
    ```bash
    ./app
    ```
-   - Using the console, provide your input (following assignment format)  
+   - Using an input file (raw text), provide your input (following assignment format)  
    - This will run parts A and B and display respective outputs (following assignment formats) 
 8. **Analyze Program**  
    From the build directory:  
